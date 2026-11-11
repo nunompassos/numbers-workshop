@@ -48,15 +48,23 @@ All environment-specific configuration—including job execution schedules, data
 All batch and scheduled jobs MUST emit structured, machine-readable logs. Logs MUST capture the full job lifecycle, explicitly recording: execution start, completion status, execution duration, total records/rows processed, and detailed diagnostic context for any failures.
 
 ## Technical Constraints & Operational Standards
-- Runtime Platform: Java 25 LTS runtime and modern language features.
-- Primary Storage: PostgreSQL, accessed via clean, lightweight persistence mechanisms.
-- Testing Suite: Unit testing framework alongside Testcontainers for PostgreSQL integration suites.
-- Configuration Management: 12-factor application principles with strictly externalized secrets.
+- Runtime Platform: Java 25 LTS.
+- Primary Storage: PostgreSQL. The persistence approach is decided in the
+  implementation plan.
+- Testing Suite: JUnit-based unit tests, plus Testcontainers for PostgreSQL
+  integration tests.
+- Configuration Management: Twelve-factor style configuration. Schedules, the
+  data source URL and database settings are externalized, and no secrets are
+  committed to the repository.
 
 ## Development Workflow & Quality Gates
-- Automated Gate: Every pull request MUST pass all unit and Testcontainers integration tests.
-- Database Review: Any change touching the database schema MUST supply an accompanying versioned migration script and proof of backward compatibility.
-- Honesty Compliance: Code reviews MUST verify that all new or altered API endpoints and presentation components deliver the mandatory mathematical honesty disclaimer.
+- Automated Gate: All unit and integration tests MUST pass before changes are
+  merged into the main branch, enforced by a CI workflow.
+- Database Changes: Every schema change MUST be a versioned migration. Migrations
+  MUST apply cleanly on an empty database and on a database containing existing
+  data, verified by an automated test.
+- Honesty Compliance: An automated test MUST verify that every API response
+  includes the mandatory disclaimer, so the rule cannot be broken silently.
 
 ## Governance
 This constitution constitutes the supreme architectural and engineering policy for the Euromilhões Probabilities project. It supersedes informal conventions and unwritten practices.
@@ -68,4 +76,4 @@ This constitution constitutes the supreme architectural and engineering policy f
   - PATCH bump: Non-semantic clarifications, typographical corrections, or formatting adjustments.
 - Compliance: Every pull request and code review MUST verify adherence to all eight core principles.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-11 | **Last Amended**: 2026-11-11
+**Version**: 1.0.1 | **Ratified**: 2026-11-11 | **Last Amended**: 2026-11-11
